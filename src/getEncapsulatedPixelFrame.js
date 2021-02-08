@@ -1,40 +1,39 @@
 
-/**
+const readUriByteRange = require('./readUriByteRange')
+
+const findFragmentIndexWithOffset = (fragments, offset) => {
+    const fragmentElements = fragments.elements()
+    for (let i = 0; i < fragmentElements.length; i++) {
+        const fragmentElement = fragmentElements[i]._fields
+        if (fragmentElement.offset.numberValue() === offset) {
+        return i;
+      }
+    }
+  };
+  
+ /**
  * Function to deal with extracting an image frame from an encapsulated data set.
  */
 
-export default function getEncapsulatedImageFrame(sopInstance, frameIndex, framesAreFragmented) {
+const getEncapsulatedImageFrame = (uri, pixelData, frameIndex, framesAreFragmented) => {
 
-    if(sopInstance.dataSet.PixelData.basicOffsetTable.length) {
-        // Basic Offset Table is not empty
-        return dicomParser.readEncapsulatedImageFrame(
-            dataSet,
-            dataSet.elements.x7fe00010,
-            frameIndex
-        );
-        }
+    // BOT present
+    if(pixelData.basicOffsetTable && pixelData.basicOffsetTable.length) {
+        const start = pixelData.basicOffsetTable[frameIndex]
+        const startFragmentIndex = findFragmentIndexWithOffset(pixelData.fragments, start.numberValue());
+        const fragment = pixelData.fragments[startFragmentIndex]
+        return readUriByteRange(uri, fragment.position, fragment.length)
     }
 
+    // No BOT
+    if(framesAreFragmented) {
+        // TODO: defragment the frame
+    } else {
+        const fragment = pixelData.fragments[frameIndex]
+        return readUriByteRange(uri, fragment.position, fragment.length)
+    }
+    
 
-  // Empty basic offset table
-
-    if (framesAreFragmented) {
-        const basicOffsetTable = dicomParser.createJPEGBasicOffsetTable(
-        dataSet,
-        dataSet.elements.x7fe00010
-    );
-
-    return dicomParser.readEncapsulatedImageFrame(
-      dataSet,
-      dataSet.elements.x7fe00010,
-      frameIndex,
-      basicOffsetTable
-    );
-  }
-
-  return dicomParser.readEncapsulatedPixelDataFromFragments(
-    dataSet,
-    dataSet.elements.x7fe00010,
-    frameIndex
-  );
 }
+
+module.exports = getEncapsulatedImageFrame

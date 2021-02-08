@@ -7,5 +7,6 @@ const readUriByteRange = (uri, start, length) => {
         const data = new Uint8Array(buffer.buffer, start, length)
         return data
     } 
+    // TODO: HTTP Byte Range
 }
 module.exports = readUriByteRange

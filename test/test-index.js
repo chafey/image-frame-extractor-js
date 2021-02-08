@@ -10,6 +10,12 @@ const loadIon = (path) => {
     return ion.load(data)
 }
 
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }   
+
 describe('index', async () => {
 
     before(async() => {
@@ -26,11 +32,14 @@ describe('index', async () => {
 
     it('exports', async () => {
         // Arrange
-        //const sourcePath = 'test/fixtures/CT0012.not_fragmented_bot_jpeg_ls.80.ion'
-        const sourcePath = 'test/fixtures/CT1_UNC.ion'
+        const sourcePath = 'test/fixtures/CT0012.not_fragmented_bot_jpeg_ls.80.ion'
+        //const sourcePath = 'test/fixtures/CT0012.fragmented_no_bot_jpeg_ls.80.ion'
+        //const sourcePath = 'test/fixtures/anon-jpgls.ion'
+        //const sourcePath = 'test/fixtures/CT1_UNC.ion'
         const sopInstance = loadIon(sourcePath)
 
         // Act
+        await sleep(100)
         const output = await imageFrameExtractor(sopInstance)
 
         // Assert

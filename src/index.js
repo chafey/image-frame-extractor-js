@@ -1,7 +1,9 @@
-//const { default: getEncapsulatedImageFrame } = require('./getEncapsulatedPixelFrame');
+const getEncapsulatedImageFrame = require('./getEncapsulatedPixelFrame');
 const getUncompressedImageFrame = require('./getUncompressedImageFrame')
 const getNumberOfFrames = require('./getNumberOfFrames')
 const getHash = require('./getHash')
+const decodeImageFrame = require('./decodeImageFrame')
+
 const areFramesAreFragmented = (pixelData, numberOfFrames) => {
     return pixelData.encapsulatedPixelData && numberOfFrames != pixelData.fragments.length
 }
@@ -25,6 +27,7 @@ const imageFrameExtractor = (sopInstance) => {
     const numberOfFrames = getNumberOfFrames(sopInstance)
 
     const framesAreFragmented = areFramesAreFragmented(pixelData, numberOfFrames)
+    console.log('framesAreFragmented=', framesAreFragmented)
 
     const uncompressedFrameSize = getFrameSize(sopInstance.dataSet)
 
@@ -32,7 +35,8 @@ const imageFrameExtractor = (sopInstance) => {
         console.log('extracting frame ', frame)
         const imageFrame = (() => {
             if(pixelData.encapsulatedPixelData) {
-                //return getEncapsulatedImageFrame(sopInstance.sourceInfo.uri, pixelData, frame, framesAreFragmented)
+                const compressedImageFrame = getEncapsulatedImageFrame(sopInstance.sourceInfo.uri, pixelData._fields, frame, framesAreFragmented)
+                return decodeImageFrame(sopInstance.dataSet, compressedImageFrame)
             } else {
                 return getUncompressedImageFrame(sopInstance.sourceInfo.uri, pixelData, frame, uncompressedFrameSize)
             }
