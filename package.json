@@ -1,0 +1,30 @@
+{
+  "name": "image-frame-extractor",
+  "version": "1.0.0",
+  "description": " Ingestion logic for extract image frames from DICOM SOP Instances ",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha --recursive --trace-warnings --unhandled-rejections=strict"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chafey/image-frame-extractor-js.git"
+  },
+  "keywords": [
+    "DICOM"
+  ],
+  "author": "Chris Hafey <chafey@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chafey/image-frame-extractor-js/issues"
+  },
+  "homepage": "https://github.com/chafey/image-frame-extractor-js#readme",
+  "dependencies": {
+    "ion-hash-js": "^2.0.0",
+    "ion-js": "^4.1.0",
+    "jsbi": "^3.1.4"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
+  }
+}
