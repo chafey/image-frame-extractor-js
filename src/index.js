@@ -15,7 +15,7 @@ const getFrameSize = (dataSet) => {
         (dataSet.BitsAllocated / 8)
 }
 
-const imageFrameExtractor = (sopInstance) => {
+const imageFrameExtractor = async (sopInstance) => {
 
     // check to make sure this sopInstance has pixel data, bail if not
     const pixelData = sopInstance.dataSet.PixelData
@@ -33,10 +33,11 @@ const imageFrameExtractor = (sopInstance) => {
 
     for(let frame = 0; frame < numberOfFrames; frame++) {
         console.log('extracting frame ', frame)
-        const imageFrame = (() => {
+        const imageFrame = await (async () => {
             if(pixelData.encapsulatedPixelData) {
                 const compressedImageFrame = getEncapsulatedImageFrame(sopInstance.sourceInfo.uri, pixelData._fields, frame, framesAreFragmented)
-                return decodeImageFrame(sopInstance.dataSet, compressedImageFrame)
+                const result = await decodeImageFrame(sopInstance.dataSet, compressedImageFrame)
+                return result.imageFrame
             } else {
                 return getUncompressedImageFrame(sopInstance.sourceInfo.uri, pixelData, frame, uncompressedFrameSize)
             }
