@@ -10,9 +10,9 @@ const decodeImageFrame = async (dataSet, compressedImageFrame) => {
         componentsPerPixel: dataSet._fields.SamplesPerPixel.numberValue()
     }
     //console.log(imageInfo)
-    console.time('decoding')
+    console.time('decoding jpegls')
     const result = await dicomCodec.decode(compressedImageFrame, dataSet._fields.TransferSyntaxUID.stringValue(), imageInfo)
-    console.timeEnd('decoding')
+    console.timeEnd('decoding jpegls')
     return result
 }
 
