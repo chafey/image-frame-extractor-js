@@ -17,7 +17,7 @@ const getFrameSize = (dataSet) => {
         (dataSet.BitsAllocated / 8)
 }
 
-const imageFrameExtractor = async (sopInstance) => {
+const imageFrameExtractor = async (sopInstance, encodedFrameCallback) => {
 
     // check to make sure this sopInstance has pixel data, bail if not
     const pixelData = sopInstance.dataSet.PixelData
@@ -64,8 +64,7 @@ const imageFrameExtractor = async (sopInstance) => {
         console.timeEnd('encoding htj2k')
         const htj2kDigest = getHash(encodeResult.encodedImageFrame)
         console.log('htj2k sha256 digest=', htj2kDigest)
-        // TODO: write encoded image frame to s3
-        fs.writeFileSync('frame' + frame, encodeResult.encodedImageFrame)
+        encodedFrameCallback(encodeResult, frame)
     }
 }
 

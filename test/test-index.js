@@ -39,7 +39,10 @@ describe('index', async () => {
         const sopInstance = loadIon(sourcePath)
 
         // Act
-        const output = await imageFrameExtractor(sopInstance)
+        await imageFrameExtractor(sopInstance, (encodeResult, frame) => {
+            //console.log(encodeResult)
+            fs.writeFileSync('frame' + frame, encodeResult.encodedImageFrame)
+        })
 
         // Assert
         assert.notStrictEqual(ion, undefined)
