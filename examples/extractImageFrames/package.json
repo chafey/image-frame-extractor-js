@@ -1,0 +1,16 @@
+{
+  "name": "extractimageframes",
+  "version": "1.0.0",
+  "description": "Extracts image frames from DICOM P10 and converts to ION",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "DICOM",
+    "ION",
+    "DAGCOM"
+  ],
+  "author": "Chris Hafey <chafey@gmail.com>",
+  "license": "MIT"
+}

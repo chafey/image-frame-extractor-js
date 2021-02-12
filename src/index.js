@@ -59,12 +59,13 @@ const imageFrameExtractor = async (sopInstance, encodedFrameCallback) => {
         console.log('uncompressed sha256 digest=', uncompressedDigest)
         // encode to htj2k
         const encodeOptions = {}
-        console.time('encoding htj2k')
+        console.log('encoding htj2k')
+        //console.time('encoding htj2k')
         const encodeResult = await dicomCodec.encode(result.imageFrame, 'htj2k', result.imageInfo, encodeOptions)
-        console.timeEnd('encoding htj2k')
+        //console.timeEnd('encoding htj2k')
         const htj2kDigest = getHash(encodeResult.encodedImageFrame)
         console.log('htj2k sha256 digest=', htj2kDigest)
-        encodedFrameCallback(encodeResult, frame)
+        encodedFrameCallback(encodeResult.encodedImageFrame, frame)
     }
 }
 
